@@ -4,19 +4,22 @@
 
 import os
 import pandas as pd
+import valores_sped as val
 
 especial= ['C100','C800','C190']
 
+
 def tabelar_ods(df,nome):
-    #try:
+    try:
         nome=  nome+'_sped.ods'
-        with pd.ExcelWriter(nome) as writer:  
+        with pd.ExcelWriter(nome) as writer:
             for dk in df.keys():
-                df[dk].to_excel(writer, engine="odf", sheet_name=dk)
+                df[dk].to_excel(writer, engine="odf", sheet_name=dk+' - '+val.blocos[dk])
         return nome
-    #except:
+    except:
         return False
-        
+
+
 def abrir(arq):
     try:
         blocos={}
@@ -44,22 +47,24 @@ def abrir(arq):
     except:
         return False
 
+
 def buscarArquivo(arq):
     if(not os.path.isfile(arq)):
         return False
-    try:       
+    try:
         arq=open(arq,'r',encoding = "ISO-8859-1")
         return arq
     except:
         return False
 
+
 def rotina(nome):
-    arq = buscarArquivo(nome)    
+    arq = buscarArquivo(nome)
     if(arq==False):
         return 'Arquivo não encontrado'
     arq = abrir(arq)
     if(arq==False):
-        return 'Arquivo de sped falhou' 
+        return 'Arquivo de sped falhou'
     while True:
         x=input('\
                 \n\t 1 - Formato ODS\
@@ -79,6 +84,7 @@ def rotina(nome):
         return 'Erro de criar tabelas'
     else: return 'Arquivo gerado : "'+arq+'"'
     return "?"
+
 
 x=input('nome do arquivo(vazio ira executar como "sped"):')
 if(x==''):
